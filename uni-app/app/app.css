@@ -1,0 +1,74 @@
+@import "tailwindcss";
+/* @plugin "daisyui"; */
+@plugin "daisyui" {
+  themes: light --default, dark --prefersdark, cupcake;
+}
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+html,
+body {
+  @apply bg-white dark:bg-gray-950;
+
+  @media (prefers-color-scheme: dark) {
+    color-scheme: dark;
+  }
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.no-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scroll {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+/* Player Styles */
+.player-wrapper {
+  position: relative;
+  padding-top: 56.25%; /* Player ratio: 100 / (1280 / 720) */
+}
+
+.react-player {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.new-scroll {
+  scrollbar-color: dark;
+}
+
+.new-scroll::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.new-scroll::-webkit-scrollbar-thumb {
+  background: #444; /* Dark Grey */
+}
+
+.new-scroll::-webkit-scrollbar-track {
+  background: #222; /* Even Darker Grey */
+}
+
+
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #444; /* Dark Grey */
+}
+
+::-webkit-scrollbar-track {
+  background: #222; /* Even Darker Grey */
+}

@@ -1,0 +1,65 @@
+version: "3.9"
+
+services:
+  # ----------------- Postgres -----------------
+  db:
+    image: postgres:16-alpine
+    container_name: srt-postgres
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
+      TZ: ${TZ}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  # ----------------- Adonis Backend -----------------
+  adonis:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: srt-backend
+    restart: unless-stopped
+    env_file: .env
+    depends_on:
+      - db
+    volumes:
+      - adonis_storage:/app/storage
+    ports:
+      - "3333:3333"
+
+  # ----------------- React Frontend -----------------
+  frontend:
+    build:
+      context: ./uni-app
+      dockerfile: Dockerfile
+    container_name: uni-app
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    depends_on:
+      - adonis
+    environment:
+      VITE_API_URL: http://adonis:3333
+
+  # ----------------- Nginx Reverse Proxy -----------------
+  nginx:
+    image: nginx:alpine
+    container_name: uni-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+    depends_on:
+      - frontend
+    environment:
+      FRONTEND_HOST: "frontend"
+
+volumes:
+  postgres_data:
+  adonis_storage:
