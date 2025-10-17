@@ -17,16 +17,25 @@ services:
     ports:
       - "5432:5432"
 
+  # ----------------- Migrate -----------------
+  migrate:
+    image: ghcr.io/devmadhava/srt-editor/srt-db-migrate:latest
+    container_name: srt-migrate
+    restart: "no"
+    env_file: .env
+    environment:
+      - NODE_ENV=development
+    depends_on:
+      - db
+
   # ----------------- Adonis Backend -----------------
   adonis:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
+    image: ghcr.io/devmadhava/srt-editor/srt-backend:latest
     container_name: srt-backend
     restart: unless-stopped
     env_file: .env
     depends_on:
-      - db
+      - migrate
     volumes:
       - adonis_storage:/app/storage
     ports:
@@ -34,9 +43,7 @@ services:
 
   # ----------------- React Frontend -----------------
   frontend:
-    build:
-      context: ./uni-app
-      dockerfile: Dockerfile
+    image: ghcr.io/devmadhava/srt-editor/uni-app:latest
     container_name: uni-app
     restart: unless-stopped
     ports:
@@ -54,11 +61,9 @@ services:
     ports:
       - "80:80"
     volumes:
-      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./nginx/conf:/etc/nginx/conf.d:ro
     depends_on:
       - frontend
-    environment:
-      FRONTEND_HOST: "frontend"
 
 volumes:
   postgres_data:

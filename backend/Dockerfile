@@ -106,12 +106,12 @@ RUN npm ci --omit=dev
 COPY --from=build /app/build ./build
 
 # Copy any other runtime files needed (like package.json, .env.example if required)
-# COPY --from=build /app/.adonisrc.json ./
-# COPY --from=build /app/start ./start
+# COPY --from=build /app/ace.js ./ace.js
+COPY --from=build /app/start ./start
+COPY --from=build /app/adonisrc.ts ./adonisrc.ts
 
 # Expose Adonis default port
 EXPOSE 3333
 
 # Start the app
 CMD ["node", "build/bin/server.js"]
-

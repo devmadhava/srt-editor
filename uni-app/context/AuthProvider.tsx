@@ -36,7 +36,10 @@ const AuthContext = createContext<AuthContextType | null>(null);
 
 // const API_URL = process.env.VITE_API_URL;
 // const IMPORT_URL = import.meta.env.VITE_API_URL
-// console.log("API_URL:", API_URL);
+console.log("API_URL:", API_URL);
+console.log("API_URL:", API_URL);
+console.log("API_URL:", API_URL);
+console.log("API_URL:", API_URL);
 // console.log("API_URL:", IMPORT_URL);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {

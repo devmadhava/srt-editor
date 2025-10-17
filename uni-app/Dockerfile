@@ -13,6 +13,12 @@ RUN npm ci
 # Copy all source files
 COPY . .
 
+# Pass API URL as build arg
+ARG VITE_API_URL
+
+# Bake this into image
+ENV VITE_API_URL=${VITE_API_URL}
+
 # Run tests
 RUN npx jest    
 
